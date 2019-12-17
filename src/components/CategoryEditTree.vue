@@ -10,6 +10,9 @@ div
         | {{ _class.name.slice(depth).join(" ➤ ")}}
         icon.ml-1(v-if="_class.data && _class.data.color" name="circle" :style="'color: ' + _class.data.color")
         span.ml-1(v-if="_class.children.length > 0" style="opacity: 0.5") ({{totalChildren}})
+        span.d-none.d-md-inline
+          span(v-if="_class.data.score !== null") {{ _class.data.score }}
+          span(v-else, style="color: #888") Unknown Productivity
 
     div.col-4.col-md-8
       span.d-none.d-md-inline
@@ -30,7 +33,6 @@ div
         b-form-input(v-model="editing.name")
       b-input-group(prepend="Parent")
         b-select(v-model="editing.parent", :options="allCategories")
-
     hr
 
     div.my-1
@@ -56,11 +58,14 @@ div
         b-btn.px-1(@click="randomColor()" style="border: 0" variant="outline-dark" title="Randomize")
           icon(name="sync" scale="1.5")
 
-    //
-      div.my-1
-        b Productivity score
-        b-input-group.my-1(prepend="Points")
-          b-form-input(v-model="editing.productivity")
+    hr
+
+    div.my-1
+      b Productivity score
+      b-form-checkbox(v-model="editing.inherit_color" switch)
+        | Inherit parent score
+      b-input-group.my-1(prepend="Score" v-if="!editing.inherit_score")
+        b-form-input(v-model="editing.score")
 
     hr
 
@@ -98,6 +103,7 @@ export default {
         id: 0, // FIXME: Use ID assigned to category in vuex store, in order for saves to be uniquely targeted
         name: null,
         rule: {},
+        productivity: -1,
         parent: [],
         inherit_color: true,
         color: null,
@@ -124,6 +130,9 @@ export default {
         return node.children.length + _.sum(_.map(node.children, countChildren));
       }
       return countChildren(this._class);
+    },
+    productivityType: function () {
+      return this.productivity_description[this.cls.productivity];
     },
   },
   methods: {
@@ -163,7 +172,10 @@ export default {
         id: this.editing.id,
         name: this.editing.parent.concat(this.editing.name),
         rule: this.editing.rule.type !== null ? this.editing.rule : { type: null },
-        data: { color: this.editing.inherit_color === true ? undefined : this.editing.color },
+        data: {
+          color: this.editing.inherit_color === true ? undefined : this.editing.color,
+          score: this.editing.inherit_score === true ? undefined : this.editing.score,
+        },
       };
       this.$store.commit('categories/updateClass', new_class);
 
@@ -175,12 +187,16 @@ export default {
     resetModal() {
       const color = this._class.data ? this._class.data.color : undefined;
       const inherit_color = !color;
+      const score = this._class.data ? this._class.data.color : undefined;
+      const inherit_score = !color;
       this.editing = {
         id: this._class.id,
         name: this._class.subname,
         rule: _.cloneDeep(this._class.rule),
         color,
         inherit_color,
+        score,
+        inherit_score,
         parent: this._class.parent ? this._class.parent : [],
       };
       //console.log(this.editing);
