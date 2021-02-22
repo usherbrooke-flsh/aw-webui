@@ -11,8 +11,7 @@ div
         icon.ml-1(v-if="_class.data && _class.data.color" name="circle" :style="'color: ' + _class.data.color")
         span.ml-1(v-if="_class.children.length > 0" style="opacity: 0.5") ({{totalChildren}})
         span.d-none.d-md-inline
-          span(v-if="_class.data.score !== null") {{ _class.data.score }}
-          span(v-else, style="color: #888") Unknown Productivity
+          span(v-if="_class.data && _class.data.score !== undefined") {{ _class.data.score }}
 
     div.col-4.col-md-8
       span.d-none.d-md-inline
@@ -62,7 +61,7 @@ div
 
     div.my-1
       b Productivity score
-      b-form-checkbox(v-model="editing.inherit_color" switch)
+      b-form-checkbox(v-model="editing.inherit_score" switch)
         | Inherit parent score
       b-input-group.my-1(prepend="Score" v-if="!editing.inherit_score")
         b-form-input(v-model="editing.score")
@@ -103,10 +102,11 @@ export default {
         id: 0, // FIXME: Use ID assigned to category in vuex store, in order for saves to be uniquely targeted
         name: null,
         rule: {},
-        productivity: -1,
         parent: [],
-        inherit_color: true,
         color: null,
+        inherit_color: true,
+        score: null,
+        inherit_score: true,
       },
     };
   },
@@ -130,9 +130,6 @@ export default {
         return node.children.length + _.sum(_.map(node.children, countChildren));
       }
       return countChildren(this._class);
-    },
-    productivityType: function () {
-      return this.productivity_description[this.cls.productivity];
     },
   },
   methods: {
@@ -187,17 +184,17 @@ export default {
     resetModal() {
       const color = this._class.data ? this._class.data.color : undefined;
       const inherit_color = !color;
-      const score = this._class.data ? this._class.data.color : undefined;
-      const inherit_score = !color;
+      const score = this._class.score ? this._class.data.score : undefined;
+      const inherit_score = !score;
       this.editing = {
         id: this._class.id,
         name: this._class.subname,
         rule: _.cloneDeep(this._class.rule),
+        parent: this._class.parent ? this._class.parent : [],
         color,
         inherit_color,
         score,
         inherit_score,
-        parent: this._class.parent ? this._class.parent : [],
       };
       //console.log(this.editing);
     },
