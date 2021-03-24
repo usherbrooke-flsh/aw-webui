@@ -53,7 +53,7 @@ function hashcode(str) {
   return hash;
 }
 
-export function getColorFromString(appname) {
+export function getColorFromString(appname: string) {
   appname = appname || '';
   appname = appname.toLowerCase();
   return customColors[appname] || scale(Math.abs(hashcode(appname) % 20));
