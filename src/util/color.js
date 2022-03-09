@@ -17,7 +17,7 @@ const customColors = {
   'not-afk': '#7F6',
   hibernating: '#DD6',
 
-  'google-chrome': '#6AA7FE', // Google Blue: "#4885ed"
+  'google-chrome': '#7F6', // Google Blue: "#4885ed"
   chromium: '#8CF', // Google Blue: "#4885ed"
   firefox: '#F94', // Firefox Orange: "#E55B0A"
   spotify: '#5FA', // Spotify Green: "#1ED760"
