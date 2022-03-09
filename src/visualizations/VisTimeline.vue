@@ -138,6 +138,23 @@ export default {
         const end =
           (this.queriedInterval && this.queriedInterval[1]) ||
           _.max(_.map(items, item => item.end));
+        const filterDuration = (document.getElementById('duration') as HTMLInputElement).value;
+        if (filterDuration && filterDuration == '900') {
+          this.options.timeAxis = { scale: 'minute', step: 1 };
+        }
+        else if (
+          filterDuration && filterDuration == '1800' || filterDuration == '3600' || filterDuration == '7200') {
+          this.options.timeAxis = { scale: 'minute', step: 5 };
+        }
+        else if (filterDuration && filterDuration == '14400') {
+          this.options.timeAxis = { scale: 'minute', step: 10 };
+        }
+        else if (filterDuration && filterDuration == '21600') {
+          this.options.timeAxis = { scale: 'hour', step: 1 };
+        }
+        else if (filterDuration && (filterDuration == '43200' || filterDuration == '86400')) {
+          this.options.timeAxis = { scale: 'hour', step: 4 };
+        }
         this.options.min = start;
         this.options.max = end;
         this.timeline.setOptions(this.options);
