@@ -10,25 +10,25 @@ div(v-if="view && classes")
         icon(name="plus")
         span {{ $t('addViz') }}
 
-  div(v-if="editing").mt-2
-    div.d-flex.flex-row-reverse
-      b-button(variant="outline-dark" @click="discard(); editing = !editing;")
-        icon(name="times")
-        span {{ $t('cancel') }}
-      b-button.mr-2(variant="success" @click="save(); editing = !editing;")
-        icon(name="save")
-        span {{ $t('save') }}
-    div.mt-2.d-flex.flex-row-reverse
-      b-button(variant="warning" size="sm" @click="restoreDefaults();")
-        icon(name="undo")
-        span {{ $t('restore') }}
-      b-button.mr-2(variant="danger" size="sm" @click="remove();")
-        icon(name="trash")
-        span {{ $t('remove') }}
-  div(v-else).d-flex.flex-row-reverse.mt-2
-    b-button(variant="outline-dark" size="sm" @click="editing = !editing")
-      icon(name="edit")
-      span {{ $t('editView') }}
+  // div(v-if="editing").mt-2
+  //   div.d-flex.flex-row-reverse
+  //     b-button(variant="outline-dark" @click="discard(); editing = !editing;")
+  //       icon(name="times")
+  //       span {{ $t('cancel') }}
+  //     b-button.mr-2(variant="success" @click="save(); editing = !editing;")
+  //       icon(name="save")
+  //       span {{ $t('save') }}
+  //   div.mt-2.d-flex.flex-row-reverse
+  //     b-button(variant="warning" size="sm" @click="restoreDefaults();")
+  //       icon(name="undo")
+  //       span {{ $t('restore') }}
+  //     b-button.mr-2(variant="danger" size="sm" @click="remove();")
+  //       icon(name="trash")
+  //       span {{ $t('remove') }}
+  // div(v-else).d-flex.flex-row-reverse.mt-2
+  //   b-button(variant="outline-dark" size="sm" @click="editing = !editing")
+  //     icon(name="edit")
+  //     span {{ $t('editView') }}
 </template>
 
 <script>
@@ -74,29 +74,29 @@ export default {
     },
   },
   methods: {
-    save() {
-      this.$store.dispatch('views/save');
-    },
-    discard() {
-      this.$store.dispatch('views/load');
-    },
-    remove() {
-      this.$store.commit('views/removeView', { view_id: this.view.id });
-      // If we're on an URL that'll be invalid after removing the view, navigate to the main/default view
-      if (!this.$route.path.includes('default')) {
-        this.$router.replace('./default');
-      }
-    },
-    restoreDefaults() {
-      this.$store.commit('views/restoreDefaults');
-      alert(
-        this.$t('restoreHelp')
-      );
-      // If we're on an URL that might become invalid, navigate to the main/default view
-      if (!this.$route.path.includes('default')) {
-        this.$router.replace('./default');
-      }
-    },
+    // save() {
+    //   this.$store.dispatch('views/save');
+    // },
+    // discard() {
+    //   this.$store.dispatch('views/load');
+    // },
+    // remove() {
+    //   this.$store.commit('views/removeView', { view_id: this.view.id });
+    //   // If we're on an URL that'll be invalid after removing the view, navigate to the main/default view
+    //   if (!this.$route.path.includes('default')) {
+    //     this.$router.replace('./default');
+    //   }
+    // },
+    // restoreDefaults() {
+    //   this.$store.commit('views/restoreDefaults');
+    //   alert(
+    //     this.$t('restoreHelp')
+    //   );
+    //   // If we're on an URL that might become invalid, navigate to the main/default view
+    //   if (!this.$route.path.includes('default')) {
+    //     this.$router.replace('./default');
+    //   }
+    // },
     addVisualization: function () {
       this.$store.commit('views/addVisualization', { view_id: this.view.id, type: 'top_apps' });
     },

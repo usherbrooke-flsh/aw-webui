@@ -41,12 +41,37 @@ div
       router-link.nav-link(:to="{ name: 'activity-view', params: {...$route.params, view_id: view.id}}" :class="{'router-link-exact-active': currentView.id == view.id}")
         h6 {{view.name}}
 
-    li.nav-item(style="margin-left: auto")
-      a.nav-link(@click="$refs.new_view.show()")
-        h6
-          icon(name="plus")
-          span.d-none.d-md-inline
-            | {{ $t('newView') }}
+    div.edit(v-if="editing" style="margin: auto 1rem 1rem auto;").mt-2
+      div.d-flex.flex-row-reverse
+        b-button(variant="outline-dark" @click="discard(); editing = !editing;")
+          icon(name="times")
+          span Cancel
+        b-button.mr-2(variant="success" @click="save(); editing = !editing;")
+          icon(name="save")
+          span Save
+        b-button.mr-2(variant="warning" size="sm" @click="restoreDefaults();")
+          icon(name="undo")
+          span Restore defaults
+        b-button.mr-2(variant="danger" size="sm" @click="remove();")
+          icon(name="trash")
+          span Remove
+
+    div(v-else style="margin-left:auto; margin-bottom: 1rem; margin-right: 15px;").d-flex.flex-row-reverse.mt-2
+      li.nav-item
+        a.nav-link(@click="$refs.new_view.show()")
+          h6
+            icon(name="plus")
+            span.d-none.d-md-inline
+              | New view
+      li.nav-item
+        a.nav-link(@click="editing = !editing")
+          h6
+            icon(name="edit")
+            span.d-none.d-md-inline
+              | Edit view
+      a.ml-2.info(id="info")
+        icon(name="info-circle")
+      b-tooltip(target="info" title="Edit summary view to change graphs")
 
   b-modal(id="new_view" ref="new_view" :title="$t('newView')" @show="resetModal" @hidden="resetModal" @ok="handleOk")
     div.my-1
@@ -107,6 +132,11 @@ $bordercolor: #ddd;
     }
   }
 }
+.info {
+  color: #343a40;
+  margin-top: 7px;
+  margin-right: 3px;
+}
 </style>
 
 <script>
@@ -121,6 +151,7 @@ import 'vue-awesome/icons/plus';
 import 'vue-awesome/icons/edit';
 import 'vue-awesome/icons/times';
 import 'vue-awesome/icons/save';
+import 'vue-awesome/icons/info-circle';
 
 export default {
   name: 'Activity',
@@ -144,6 +175,7 @@ export default {
       today: get_today(),
       filterCategory: null,
       new_view: {},
+      editing: false
     };
   },
   computed: {
@@ -315,6 +347,32 @@ export default {
         id: '',
         name: '',
       };
+    },
+    save() {
+      this.$store.dispatch('views/save');
+    },
+    discard() {
+      this.$store.dispatch('views/load');
+    },
+    remove() {
+      this.$store.commit('views/removeView', { view_id: this.view.id });
+      // If we're on an URL that'll be invalid after removing the view, navigate to the main/default view
+      if (!this.$route.path.includes('default')) {
+        this.$router.replace('./default');
+      }
+    },
+    restoreDefaults() {
+      this.$store.commit('views/restoreDefaults');
+      alert(
+        "All views have been restored to defaults. Changes won't be saved until you click 'Save'."
+      );
+      // If we're on an URL that might become invalid, navigate to the main/default view
+      if (!this.$route.path.includes('default')) {
+        this.$router.replace('./default');
+      }
+    },
+    isVisLarge(el) {
+      return el.type == 'sunburst_clock';
     },
   },
 };
