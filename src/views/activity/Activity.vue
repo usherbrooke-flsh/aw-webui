@@ -45,16 +45,16 @@ div
       div.d-flex.flex-row-reverse
         b-button(variant="outline-dark" @click="discard(); editing = !editing;")
           icon(name="times")
-          span Cancel
+          span {{ $t('Cancel') }}
         b-button.mr-2(variant="success" @click="save(); editing = !editing;")
           icon(name="save")
-          span Save
+          span {{ $t('Save') }}
         b-button.mr-2(variant="warning" size="sm" @click="restoreDefaults();")
           icon(name="undo")
-          span Restore defaults
+          span {{ $t('Restore defaults') }}
         b-button.mr-2(variant="danger" size="sm" @click="remove();")
           icon(name="trash")
-          span Remove
+          span {{ $t('Remove') }}
 
     div(v-else style="margin-left:auto; margin-bottom: 1rem; margin-right: 15px;").d-flex.flex-row-reverse.mt-2
       li.nav-item
