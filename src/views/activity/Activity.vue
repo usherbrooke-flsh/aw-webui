@@ -45,16 +45,16 @@ div
       div.d-flex.flex-row-reverse
         b-button(variant="outline-dark" @click="discard(); editing = !editing;")
           icon(name="times")
-          span {{ $t('Cancel') }}
+          span {{ $t('cancel') }}
         b-button.mr-2(variant="success" @click="save(); editing = !editing;")
           icon(name="save")
-          span {{ $t('Save') }}
+          span {{ $t('save') }}
         b-button.mr-2(variant="warning" size="sm" @click="restoreDefaults();")
           icon(name="undo")
-          span {{ $t('Restore defaults') }}
+          span {{ $t('restore') }}
         b-button.mr-2(variant="danger" size="sm" @click="remove();")
           icon(name="trash")
-          span {{ $t('Remove') }}
+          span {{ $t('remove') }}
 
     div(v-else style="margin-left:auto; margin-bottom: 1rem; margin-right: 15px;").d-flex.flex-row-reverse.mt-2
       li.nav-item
@@ -62,16 +62,16 @@ div
           h6
             icon(name="plus")
             span.d-none.d-md-inline
-              | New view
+              | {{ $t('newView') }}
       li.nav-item
         a.nav-link(@click="editing = !editing")
           h6
             icon(name="edit")
             span.d-none.d-md-inline
-              | Edit view
+              | {{ $t('editView') }}
       a.ml-2.info(id="info")
         icon(name="info-circle")
-      b-tooltip(target="info" title="Edit summary view to change graphs")
+      b-tooltip(target="info" :title="$t('editViewTooltip')")
 
   b-modal(id="new_view" ref="new_view" :title="$t('newView')" @show="resetModal" @hidden="resetModal" @ok="handleOk")
     div.my-1
@@ -175,7 +175,7 @@ export default {
       today: get_today(),
       filterCategory: null,
       new_view: {},
-      editing: false
+      editing: false,
     };
   },
   computed: {
