@@ -4,7 +4,6 @@ div(style="overflow-x: scroll;", v-if="datasets !== null")
 </template>
 
 <script>
-// import _ from 'lodash';
 import moment from 'moment';
 
 export default {
