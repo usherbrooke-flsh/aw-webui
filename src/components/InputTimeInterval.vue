@@ -11,14 +11,14 @@ div
         th.pr-2
           label(for="mode") {{ $t('intervalMode') }}
         td
-          select(id="mode", v-model="mode")
+          select(id="mode", v-model="mode" class="form-control" )
             option(value='last_duration') {{ $t('lastDuration') }}
             option(value='range') {{ $t('dateRange') }}
       tr(v-if="mode == 'last_duration'")
         th.pr-2
           label(for="duration") {{ $t('showLast') }}
         td
-          select(id="duration", v-model="duration", @change="valueChanged")
+          select(id="duration", v-model="duration", @change="valueChanged" class="form-control" )
             option(:value="15*60") 15min
             option(:value="30*60") 30min
             option(:value="60*60") 1h

@@ -1,10 +1,17 @@
 <template lang="pug">
 div(style="overflow-x: scroll;", v-if="datasets !== null")
+  div
+      span(class="w-25 font-weight-bold" ) {{ $t('apps') }}
+      b-select(@change="selectApp($event)" v-model="selectedValue" class="form-control w-25" )
+          option(value="null" disabled) Select App
+          option(v-for="app in appList" :value="app") {{app}}
+
   apexchart(type="heatmap", :options="options", :series="datasets", :width="width")
 </template>
 
 <script>
 import moment from 'moment';
+import _ from 'lodash';
 
 export default {
   name: 'HeatmapChart',
@@ -17,6 +24,9 @@ export default {
       datasets: null,
       options: null,
       width: this.$isAndroid ? 700 : '100%',
+      selectedValue: null,
+      appList: [],
+      dataseries: null,
     };
   },
   watch: {
@@ -96,8 +106,21 @@ export default {
           categories: categories.map(c => c.format('HH:mm')),
         },
       };
-
-      this.datasets = Object.entries(datasets).map(([key, value]) => ({ name: key, data: value }));
+      this.appList = [];
+      this.datasets = Object.entries(datasets).map(([key, value]) => {
+        this.appList.push(key);
+        return ({ name: key, data: value })
+      });
+      this.dataseries = this.datasets;
+    },
+    selectApp: function (app) {
+      this.datasets = this.dataseries;
+      this.filterByApp(app);
+    },
+    filterByApp: function(app) {
+      this.datasets = this.datasets.filter(function (data) {
+            return _.includes(data, app);
+      });
     },
   },
 };

@@ -2,10 +2,10 @@
 div.mx-3
   b-form
     b-form-group(:label="$t('bucket')")
-      select(v-model="selectedBucket")
+      select(v-model="selectedBucket" class="form-control w-25" )
         option(v-for="bucket in buckets", :value="bucket.id") {{ bucket.id }}
     b-form-group(:label="$t('show')")
-      select(v-model="view")
+      select(v-model="view" class="form-control w-25" )
         option(value="timeGridDay") {{ $t('day') }}
         option(value="timeGridWeek") {{ $t('week') }}
     b-form-group
