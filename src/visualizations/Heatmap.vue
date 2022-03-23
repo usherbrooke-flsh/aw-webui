@@ -3,7 +3,7 @@ div(style="overflow-x: scroll;", v-if="datasets !== null")
   div
       span(class="w-25 font-weight-bold" ) {{ $t('apps') }}
       b-select(@change="selectApp($event)" v-model="selectedValue" class="form-control w-25" )
-          option(value="null" disabled) Select App
+          option(value="null" disabled) {{ $t('selectApp') }}
           option(v-for="app in appList" :value="app") {{app}}
 
   apexchart(type="heatmap", :options="options", :series="datasets", :width="width")
@@ -106,10 +106,10 @@ export default {
           categories: categories.map(c => c.format('HH:mm')),
         },
       };
-      this.appList = [];
+      this.appList = Object.keys(datasets);
       this.datasets = Object.entries(datasets).map(([key, value]) => {
         this.appList.push(key);
-        return ({ name: key, data: value })
+        return { name: key, data: value };
       });
       this.dataseries = this.datasets;
     },
@@ -117,9 +117,9 @@ export default {
       this.datasets = this.dataseries;
       this.filterByApp(app);
     },
-    filterByApp: function(app) {
-      this.datasets = this.datasets.filter(function (data) {
-            return _.includes(data, app);
+    filterByApp: function (app) {
+      this.datasets = this.datasets.filter(data => {
+        return _.includes(data, app);
       });
     },
   },

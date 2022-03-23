@@ -199,7 +199,8 @@ const messages = {
   devUpdate: 'development updates',
   changeHome: 'You can change which page opens when you open ActivityWatch (instead of this page) in the',
   editViewTooltip: 'Edit summary view to change graphs',
-  apps: 'Apps: '
+  apps: 'Apps: ',
+  selectApp: 'Select App',
 
 };
 
