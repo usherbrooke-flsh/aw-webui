@@ -68,7 +68,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   var userLanguage = window.navigator.userLanguage || window.navigator.language;
-  userLanguage = userLanguage ? userLanguage.substring(2, 0) : 'fr';
+  userLanguage = userLanguage ? userLanguage.substring(2, 0) : 'en';
   const lang = to.params.lang || userLanguage;
   loadLanguageAsync(lang).then(() => next());
 })
